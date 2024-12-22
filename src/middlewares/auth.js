@@ -1,3 +1,5 @@
+//this is a  middleware function  it checks the token if it is matched then proceed to next handler by next()
+//else return a response as unauthorized request which stops to not go further request handlers
 const adminAuth = (req,res,next)=>{
     //Logic of checking the request is authorized 
      const token = "xyz"
