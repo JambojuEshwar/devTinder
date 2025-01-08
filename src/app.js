@@ -33,6 +33,95 @@ app.post("/signup",async(req,res)=>{
 
 })
 
+
+//Get user by email
+app.get("/user",async(req,res)=>{
+    const userEmail = req.body.emailId
+
+    try{
+        //returns only one document inorder to return only one document for same email having multiple documents
+        const user = await User.findOne({emailId:userEmail})
+        if(!user){
+            res.status(404).send("User not found")
+        }
+        else{
+            res.send(user);
+        }
+
+        //find({}) returns all documents in database 
+    //     const user = await User.find({emailId: userEmail});
+    //    if(user.length === 0){
+    //     res.status(404).send("User not found");
+    //    }
+    //    else{
+    //     res.send(user);
+    //    }
+    }
+    catch(err){
+        res.status(400).send("Something went wrong")
+    }
+})
+
+//let us find user by id
+app.get("/userId",async(req,res)=>{
+     
+    const userId = req.body.userId;
+
+    try{
+        const user = await User.findById(userId);
+        if(!user){
+            return res.status(404).send("User not Found")
+        }
+        else{
+            res.send(user)
+        }
+    }
+    catch(err){
+        res.status(400).send("Something went wrong")
+    }
+})
+
+//Feed API - GET /feed - get all the users from the database
+
+app.get("/feed",async(req,res)=>{
+    try{
+        const user = await User.find({});
+        res.send(user)
+    }
+    catch(err){
+        res.status(400).send("Something went wrong")
+    }
+})
+
+//delete a userby
+app.delete("/user",async(req,res)=>{
+    const userId = req.body.userId
+    try{
+        const user = await User.findByIdAndDelete(userId);
+        res.send("User deleted successfully")
+    }
+    catch(err){
+        res.status(400).send("Something went wrong")
+    }
+})
+
+
+app.patch("/user",async(req,res)=>{
+    const userId = req.body.userId;
+    const data = req.body;
+    console.log(data);
+    try{
+       const user  = await User.findByIdAndUpdate({_id:userId},data,{
+            returnDocument:"Before",
+        })
+        console.log(user)
+        res.send("User updated successfully")
+    }
+    catch(err){
+        res.status(400).send("Something went wrong")
+    }
+})
+
 connectDB().then(()=>{
 // always first connect to the database and then start listening to requests
     console.log("Database connection established...")
