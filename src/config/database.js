@@ -3,8 +3,8 @@ const mongoose = require('mongoose')
 //this is the correct way to handle the connection using async function
 const  connectDB = async ()=>{
     
-    await mongoose.connect("mongodb+srv://eshwar:VU5CGD7q3AGMBnfH@namastenode.cgsl7.mongodb.net/devTinder")
-
+    await mongoose.connect("mongodb+srv://eshwar25in:Y6mCZQOOsHpmeXNU@namastenodedb.dabpx.mongodb.net/devTinder")
+    
 }
 
 module.exports = connectDB;
@@ -16,3 +16,5 @@ module.exports = connectDB;
 //     "mongodb+srv://eshwar:VU5CGD7q3AGMBnfH@namastenode.cgsl7.mongodb.net/devTinder"
 // )
 
+
+//Y6mCZQOOsHpmeXNU
