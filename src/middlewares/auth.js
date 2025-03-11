@@ -19,7 +19,7 @@ if(!token){
     res.send("Token is not valid!!!")
 }
 
-const decodeMessage = await jwt.verify("token","DEVTinder$790")
+const decodeMessage = await jwt.verify(token,"DEVTinder$790")
 
 //jwt.verify returns a javascript object in the form of hash S9q7kQJxZ7W2db8H5Z5RL1Lz2ryNTWVmnzjktV5-2uk 
 //on decoding this  we get this object 
