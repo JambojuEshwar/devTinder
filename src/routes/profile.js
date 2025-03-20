@@ -4,6 +4,9 @@ const profileRouter = express.Router()
 
 const {userAuth} = require('../middlewares/auth')
 
+const User = require('../models/user');
+
+
 const {validateEditProfileData} = require('../utils/Validation')
 
 const bcrypt = require('bcrypt')
@@ -30,11 +33,11 @@ profileRouter.patch("/profile/edit",userAuth,async(req,res)=>{
     
         const loggedInUser = req.user
         //this returns loggedinuser that comes from userauth after validation
-        console.log(loggedInuser)
+        console.log(loggedInUser)
     
-        Object.keys(req.body).every(key => (loggedInuser[key]=req.body[req]))
+        Object.keys(req.body).every(key => (loggedInUser[key]=req.body[key]))
     
-        await loggedInuser.save()
+        await loggedInUser.save()
     
        res.json({
         message: `${loggedInUser.firstName} Profile Updated Successfully`,

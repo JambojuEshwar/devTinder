@@ -6,6 +6,8 @@ const {userAuth} = require("../middlewares/auth")
 
 const connectionRequest = require('../models/connectionRequest')
 
+const User = require('../models/user')
+
 const USER_SAFE_DATA = "firstName lastName photoUrl about skills"
 
 //GET ALL THE PENDING REQUESTS for  A loggedInUser
@@ -105,3 +107,53 @@ userRouter.get("/user/connections",userAuth,async(req,res)=>{
 
  
 })
+
+
+
+//inorder to write this api  
+
+//1)In our feed we never show our information on card as feed (for ourself afterlogged in)
+//2)also dont show the user whom we sent the request
+//3)dont show the user who has sent request to us
+
+
+userRouter.get("/feed",userAuth,async(req,res)=>{
+   try{
+    const loggedInUser = req.user
+
+    const page = (req.query.page) || 1
+    const limit = (req.query.limit) ||10
+
+    const skip = (page-1)*10
+
+    //show the requests for a loggedInuser (sent+recieved)
+    const connectionRequests = await connectionRequest.find({
+        $or:[{fromUserId:loggedInUser._id},{toUserId:loggedInUser._id}]
+    }).select("fromUserId toUserId")
+
+
+    
+
+    //set() removes the duplicates from the list
+    const hideUsersFromFeed = new Set();
+
+    connectionRequests.forEach((req)=>{
+        hideUsersFromFeed.add(req.fromUserId.toString()) //user who send the request
+        hideUsersFromFeed.add(req.toUserId.toString())  //user who recieves the request
+    })
+
+    const users = await User.find({
+        $and:[{_id:{$nin:Array.from(hideUsersFromFeed)}},{_id:{$ne:loggedInUser._id}}]
+    }).select(USER_SAFE_DATA) 
+      .skip(skip)
+      .limit(limit)
+
+    res.send(users)
+   }
+   catch(err){
+    res.status(400).send({message:err.message})
+   }
+
+})
+
+module.exports = userRouter

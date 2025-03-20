@@ -1,3 +1,4 @@
+
 const express = require('express')
 
 const requestRouter = express.Router()
@@ -51,7 +52,7 @@ requestRouter.post("/request/send/:status/:toUserId",userAuth,async(req,res)=>{
 
        const data = await connectionRequest.save();
        res.json({
-        message:"Connection Request Sent Successfully!!",
+        message: req.user.firstName + "is " + status + " in " + toUser.firstName,
         data,
        })
 
@@ -59,13 +60,9 @@ requestRouter.post("/request/send/:status/:toUserId",userAuth,async(req,res)=>{
     catch(err){
         res.status(400).send("ERROR : " + err.message)
     }
-
-
-
-    res.send(user.firstName + " sent the connection request")
 })
 
-requestRouter.post("/request/review/:status/requestId",userAuth,async(req,res)=>{
+requestRouter.post("/request/review/:status/:requestId",userAuth,async(req,res)=>{
     try{
         const loggedInUser = req.user
 
@@ -77,12 +74,17 @@ requestRouter.post("/request/review/:status/requestId",userAuth,async(req,res)=>
     }
 
 
+   
+
+
     //approving the connectionrequest accept/reject by loggedinuser(reciever)
-    const connectionRequest = await findOne({
+    const connectionRequest = await ConnectionRequest.findOne({
         _id:requestId,
         toUserId:loggedInUser._id,
-        status:"interested"
+        status:"interested",
     })
+
+
     if(!connectionRequest){
         return res.status(404).json({message : "Connection Request Not Found!!"})
     }

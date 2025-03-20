@@ -3,17 +3,15 @@ const mongoose = require('mongoose')
 //this is the correct way to handle the connection using async function
 const  connectDB = async ()=>{
     
-    await mongoose.connect("mongodb+srv://eshwar25in:pZ9UqbpGTIEYJpn5@namastenodedb.uybrn.mongodb.net/")
+    await mongoose.connect("mongodb+srv://eshwar25in:es21012003@devtinder.jvkas.mongodb.net/?retryWrites=true&w=majority")
     
 }
 
 module.exports = connectDB;
 
 
- //this mongoose.connect returns a promise and also tells us that connection is established successfully or not
- //this is not correct way to handle 
+//this mongoose.connect returns a promise and also tells us that connection is established successfully or not
+//this is not correct way to handle 
 // mongoose.connect(
 //     "mongodb+srv://eshwar:VU5CGD7q3AGMBnfH@namastenode.cgsl7.mongodb.net/devTinder"
 // )
-
-//pZ9UqbpGTIEYJpn5
